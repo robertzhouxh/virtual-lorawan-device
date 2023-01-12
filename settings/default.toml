@@ -1,9 +1,17 @@
 default_server = "prod"
 default_packet_forwarder = "default"
 metrics_server = "127.0.0.1"
-metrics_port = 9898
-# if any explicit packet forwarders are defined in settings.toml,
-# this packet forwarder is pruned from the map
+metrics_port = 1701
+
 [packet_forwarder.default]
-host = "localhost:1680"
-mac = "0807060504030201"
+host = "localhost:1700"
+mac = "0000000000000000"
+
+[packet_forwarder.eu]
+host = "localhost:1700"
+mac = "0000000000000000"
+
+[packet_forwarder.cn]
+host = "localhost:1700"
+mac = "1000000000000000"
+

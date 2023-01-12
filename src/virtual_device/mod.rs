@@ -17,6 +17,7 @@ pub struct VirtualDevice {
     sender: mpsc::Sender<IntermediateEvent>,
     metrics_sender: metrics::Sender,
     rejoin_frames: u32,
+    payload: String,
     secs_between_transmits: u64,
     secs_between_join_transmits: u64,
 }
@@ -43,6 +44,7 @@ impl VirtualDevice {
         client_tx: ClientTx,
         credentials: Credentials,
         metrics_sender: metrics::Sender,
+        payload: String,
         rejoin_frames: u32,
         secs_between_transmits: u64,
         secs_between_join_transmits: u64,
@@ -74,6 +76,7 @@ impl VirtualDevice {
                 device,
                 receiver,
                 sender,
+                payload,
                 metrics_sender,
                 rejoin_frames,
                 secs_between_transmits,
@@ -233,19 +236,11 @@ impl VirtualDevice {
 
                         let sender = self.sender.clone();
                         let duration = Duration::from_secs(self.secs_between_transmits);
+                        let payload = self.payload.as_bytes().to_vec();
                         tokio::spawn(async move {
                             sleep(duration).await;
                             sender
-                                .send(IntermediateEvent::SendPacket(
-                                    vec![
-                                        rand::random(),
-                                        rand::random(),
-                                        rand::random(),
-                                        rand::random(),
-                                    ],
-                                    fport,
-                                    confirmed,
-                                ))
+                                .send(IntermediateEvent::SendPacket(payload, fport, confirmed))
                                 .await
                                 .unwrap();
                         });

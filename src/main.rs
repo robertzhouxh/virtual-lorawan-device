@@ -87,6 +87,7 @@ async fn main() -> Result<()> {
                 client_tx.clone(),
                 device.credentials,
                 metrics_sender,
+                device.payload,
                 device.rejoin_frames,
                 device.secs_between_transmits,
                 device.secs_between_join_transmits,

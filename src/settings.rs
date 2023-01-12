@@ -43,6 +43,8 @@ impl Settings {
 
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Device {
+    #[serde(default = "default_payload")]
+    pub payload: String,
     pub credentials: Credentials,
     #[serde(default = "default_rejoin_frames")]
     pub rejoin_frames: u32,
@@ -60,6 +62,10 @@ pub struct Device {
 pub enum Region {
     US915,
     EU868,
+}
+
+fn default_payload() -> String {
+    String::from("1234")
 }
 
 fn default_secs_between_transmits() -> u64 {
